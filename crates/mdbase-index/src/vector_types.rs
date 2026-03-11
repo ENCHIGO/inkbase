@@ -1,5 +1,5 @@
 /// A single result from a vector similarity search.
-#[derive(Debug, Clone, serde::Serialize)]
+#[derive(Debug, Clone, serde::Serialize, utoipa::ToSchema)]
 pub struct VectorSearchResult {
     /// The document that contains this match.
     pub doc_id: String,

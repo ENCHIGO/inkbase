@@ -2,8 +2,11 @@ use axum::routing::{delete, get, post};
 use axum::Router;
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
+use utoipa::OpenApi;
+use utoipa_swagger_ui::SwaggerUi;
 
 use crate::handlers;
+use crate::openapi::ApiDoc;
 use crate::state::AppState;
 
 /// Build the application router with all API endpoints, CORS, and tracing.
@@ -34,6 +37,10 @@ pub fn build_router(state: AppState) -> Router {
 
     Router::new()
         .nest("/api/v1", api)
+        .merge(
+            SwaggerUi::new("/swagger-ui")
+                .url("/api-docs/openapi.json", ApiDoc::openapi()),
+        )
         .layer(TraceLayer::new_for_http())
         .layer(CorsLayer::permissive())
         .with_state(state)

@@ -1,9 +1,10 @@
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use axum::Json;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use tracing::{debug, error, info};
+use utoipa::ToSchema;
 
 use crate::state::AppState;
 
@@ -24,27 +25,35 @@ fn join_error(err: tokio::task::JoinError) -> (StatusCode, Json<Value>) {
 // Request / query types
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
 pub struct IngestRequest {
+    /// Relative file path (e.g. "notes/rust.md")
     pub path: String,
+    /// Raw Markdown content
     pub content: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
 pub struct SearchRequest {
+    /// Search query text
     pub query: String,
+    /// Max number of results (default 20 for fulltext, 10 for semantic)
     pub limit: Option<usize>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
 pub struct ShortestPathQuery {
+    /// Source document path
     pub from: String,
+    /// Target document path
     pub to: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
 pub struct PageRankParams {
+    /// Damping factor (default 0.85)
     pub damping: Option<f64>,
+    /// Number of iterations (default 20)
     pub iterations: Option<usize>,
 }
 
@@ -53,11 +62,29 @@ pub struct PageRankParams {
 // ---------------------------------------------------------------------------
 
 /// `GET /api/v1/health`
+#[utoipa::path(
+    get,
+    path = "/api/v1/health",
+    tag = "operational",
+    responses(
+        (status = 200, description = "Health check", body = Object,
+         example = json!({"status": "ok"}))
+    )
+)]
 pub async fn health_check() -> Json<Value> {
     Json(json!({ "status": "ok" }))
 }
 
 /// `GET /api/v1/stats` -- database-level statistics.
+#[utoipa::path(
+    get,
+    path = "/api/v1/stats",
+    tag = "operational",
+    responses(
+        (status = 200, description = "Database statistics", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn database_stats(
     State(state): State<AppState>,
 ) -> Result<Json<Value>, (StatusCode, Json<Value>)> {
@@ -87,6 +114,17 @@ pub async fn database_stats(
 // ---------------------------------------------------------------------------
 
 /// `POST /api/v1/documents` -- ingest (parse + store + index + graph) a document.
+#[utoipa::path(
+    post,
+    path = "/api/v1/documents",
+    tag = "documents",
+    request_body = IngestRequest,
+    responses(
+        (status = 201, description = "Document ingested successfully", body = Object),
+        (status = 400, description = "Parse error", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn ingest_document(
     State(state): State<AppState>,
     Json(req): Json<IngestRequest>,
@@ -203,6 +241,15 @@ pub async fn ingest_document(
 }
 
 /// `GET /api/v1/documents` -- list all documents.
+#[utoipa::path(
+    get,
+    path = "/api/v1/documents",
+    tag = "documents",
+    responses(
+        (status = 200, description = "List of all documents", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn list_documents(
     State(state): State<AppState>,
 ) -> Result<Json<Value>, (StatusCode, Json<Value>)> {
@@ -223,6 +270,17 @@ pub async fn list_documents(
 }
 
 /// `GET /api/v1/documents/:path` -- get a single document by path.
+#[utoipa::path(
+    get,
+    path = "/api/v1/documents/{path}",
+    tag = "documents",
+    params(("path" = String, Path, description = "Document path")),
+    responses(
+        (status = 200, description = "Document with tags", body = Object),
+        (status = 404, description = "Document not found", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn get_document(
     State(state): State<AppState>,
     Path(path): Path<String>,
@@ -259,6 +317,17 @@ pub async fn get_document(
 }
 
 /// `DELETE /api/v1/documents/:path` -- delete a document and cascade.
+#[utoipa::path(
+    delete,
+    path = "/api/v1/documents/{path}",
+    tag = "documents",
+    params(("path" = String, Path, description = "Document path")),
+    responses(
+        (status = 200, description = "Document deleted", body = Object),
+        (status = 404, description = "Document not found", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn delete_document(
     State(state): State<AppState>,
     Path(path): Path<String>,
@@ -329,6 +398,17 @@ pub async fn delete_document(
 // ---------------------------------------------------------------------------
 
 /// `GET /api/v1/documents/:path/blocks` -- get all blocks for a document.
+#[utoipa::path(
+    get,
+    path = "/api/v1/documents/{path}/blocks",
+    tag = "documents",
+    params(("path" = String, Path, description = "Document path")),
+    responses(
+        (status = 200, description = "Blocks for the document", body = Object),
+        (status = 404, description = "Document not found", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn get_blocks(
     State(state): State<AppState>,
     Path(path): Path<String>,
@@ -358,6 +438,16 @@ pub async fn get_blocks(
 }
 
 /// `GET /api/v1/documents/:path/links` -- outgoing links from a document.
+#[utoipa::path(
+    get,
+    path = "/api/v1/documents/{path}/links",
+    tag = "documents",
+    params(("path" = String, Path, description = "Document path")),
+    responses(
+        (status = 200, description = "Outgoing links", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn get_links(
     State(state): State<AppState>,
     Path(path): Path<String>,
@@ -373,6 +463,16 @@ pub async fn get_links(
 }
 
 /// `GET /api/v1/documents/:path/backlinks` -- incoming links to a document.
+#[utoipa::path(
+    get,
+    path = "/api/v1/documents/{path}/backlinks",
+    tag = "documents",
+    params(("path" = String, Path, description = "Document path")),
+    responses(
+        (status = 200, description = "Incoming backlinks", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn get_backlinks(
     State(state): State<AppState>,
     Path(path): Path<String>,
@@ -392,6 +492,16 @@ pub async fn get_backlinks(
 // ---------------------------------------------------------------------------
 
 /// `POST /api/v1/search/fulltext` -- full-text search.
+#[utoipa::path(
+    post,
+    path = "/api/v1/search/fulltext",
+    tag = "search",
+    request_body = SearchRequest,
+    responses(
+        (status = 200, description = "Fulltext search results", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn fulltext_search(
     State(state): State<AppState>,
     Json(req): Json<SearchRequest>,
@@ -420,6 +530,16 @@ pub async fn fulltext_search(
 }
 
 /// `POST /api/v1/search/semantic` -- semantic similarity search.
+#[utoipa::path(
+    post,
+    path = "/api/v1/search/semantic",
+    tag = "search",
+    request_body = SearchRequest,
+    responses(
+        (status = 200, description = "Semantic search results", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn semantic_search(
     State(state): State<AppState>,
     Json(req): Json<SearchRequest>,
@@ -456,12 +576,33 @@ pub async fn semantic_search(
 // ---------------------------------------------------------------------------
 
 /// `GET /api/v1/graph/stats` -- knowledge graph statistics.
+#[utoipa::path(
+    get,
+    path = "/api/v1/graph/stats",
+    tag = "graph",
+    responses(
+        (status = 200, description = "Graph statistics", body = Object)
+    )
+)]
 pub async fn graph_stats(State(state): State<AppState>) -> Json<Value> {
     let stats = state.graph.stats();
     Json(json!(stats))
 }
 
 /// `GET /api/v1/graph/shortest-path?from=X&to=Y`
+#[utoipa::path(
+    get,
+    path = "/api/v1/graph/shortest-path",
+    tag = "graph",
+    params(
+        ("from" = String, Query, description = "Source document path"),
+        ("to" = String, Query, description = "Target document path")
+    ),
+    responses(
+        (status = 200, description = "Shortest path between documents", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn shortest_path(
     State(state): State<AppState>,
     Query(params): Query<ShortestPathQuery>,
@@ -484,6 +625,19 @@ pub async fn shortest_path(
 }
 
 /// `GET /api/v1/graph/pagerank?damping=0.85&iterations=20`
+#[utoipa::path(
+    get,
+    path = "/api/v1/graph/pagerank",
+    tag = "graph",
+    params(
+        ("damping" = Option<f64>, Query, description = "Damping factor (default 0.85)"),
+        ("iterations" = Option<usize>, Query, description = "Number of iterations (default 20)")
+    ),
+    responses(
+        (status = 200, description = "PageRank scores", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn graph_pagerank(
     State(state): State<AppState>,
     Query(params): Query<PageRankParams>,
@@ -509,6 +663,15 @@ pub async fn graph_pagerank(
 }
 
 /// `GET /api/v1/graph/components`
+#[utoipa::path(
+    get,
+    path = "/api/v1/graph/components",
+    tag = "graph",
+    responses(
+        (status = 200, description = "Connected components", body = Object),
+        (status = 500, description = "Internal server error", body = Object)
+    )
+)]
 pub async fn graph_components(
     State(state): State<AppState>,
 ) -> Result<Json<Value>, (StatusCode, Json<Value>)> {

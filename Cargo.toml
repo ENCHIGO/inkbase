@@ -59,6 +59,10 @@ reqwest = { version = "0.12", features = ["json", "blocking"] }
 axum = "0.8"
 tower-http = { version = "0.6", features = ["cors", "trace"] }
 
+# API documentation
+utoipa = { version = "5", features = ["chrono", "uuid"] }
+utoipa-swagger-ui = { version = "9", features = ["axum"] }
+
 # CLI
 clap = { version = "4", features = ["derive"] }
 

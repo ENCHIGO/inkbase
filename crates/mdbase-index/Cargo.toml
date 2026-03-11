@@ -15,6 +15,7 @@ thiserror.workspace = true
 anyhow.workspace = true
 parking_lot.workspace = true
 ordered-float.workspace = true
+utoipa.workspace = true
 
 [dev-dependencies]
 tempfile = "3"
