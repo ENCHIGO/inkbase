@@ -1,0 +1,22 @@
+[package]
+name = "inkbase-mcp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MCP server for Inkbase — exposes document storage and query tools to AI agents"
+
+[dependencies]
+inkbase-core.workspace = true
+inkbase-parser.workspace = true
+inkbase-storage.workspace = true
+inkbase-index.workspace = true
+inkbase-graph.workspace = true
+inkbase-embedding.workspace = true
+rmcp.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+axum.workspace = true
+anyhow.workspace = true

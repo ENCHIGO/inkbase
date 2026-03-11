@@ -1,0 +1,23 @@
+[package]
+name = "inkbase-server"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "inkbase"
+path = "src/main.rs"
+
+[dependencies]
+inkbase-core.workspace = true
+inkbase-parser.workspace = true
+inkbase-storage.workspace = true
+inkbase-index.workspace = true
+inkbase-graph.workspace = true
+inkbase-embedding.workspace = true
+inkbase-mcp.workspace = true
+inkbase-api.workspace = true
+clap.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+anyhow.workspace = true

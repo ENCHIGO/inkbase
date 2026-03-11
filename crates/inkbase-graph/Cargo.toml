@@ -1,0 +1,16 @@
+[package]
+name = "inkbase-graph"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "In-memory knowledge graph for Inkbase link navigation"
+
+[dependencies]
+inkbase-core = { workspace = true }
+petgraph = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+utoipa = { workspace = true }
