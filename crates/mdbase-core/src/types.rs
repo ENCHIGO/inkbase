@@ -1,12 +1,13 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 use uuid::Uuid;
 
 // ---------------------------------------------------------------------------
 // BlockType — the kind of structural element a block represents
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, ToSchema)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum BlockType {
     Heading { level: u8 },
@@ -26,7 +27,7 @@ pub enum BlockType {
 // LinkType — how two documents are connected
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, ToSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum LinkType {
     WikiLink,
@@ -39,7 +40,7 @@ pub enum LinkType {
 // DocumentRecord — represents a single Markdown file in the store
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct DocumentRecord {
     pub doc_id: Uuid,
     /// Relative path within the data directory (e.g. "notes/rust.md").
@@ -60,7 +61,7 @@ pub struct DocumentRecord {
 // BlockRecord — a structural element within a document
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct BlockRecord {
     pub block_id: Uuid,
     pub doc_id: Uuid,
@@ -81,7 +82,7 @@ pub struct BlockRecord {
 // LinkRecord — a directed link between documents (or to an external target)
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct LinkRecord {
     pub link_id: Uuid,
     pub source_doc_id: Uuid,
@@ -100,7 +101,7 @@ pub struct LinkRecord {
 // EmbeddingRecord — a vector embedding for semantic search
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct EmbeddingRecord {
     pub embedding_id: Uuid,
     pub doc_id: Uuid,
@@ -116,7 +117,7 @@ pub struct EmbeddingRecord {
 // TagRecord — a key/value tag extracted from frontmatter
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct TagRecord {
     pub tag_id: Uuid,
     pub doc_id: Uuid,

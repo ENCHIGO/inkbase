@@ -1,5 +1,5 @@
 /// A single result from a full-text search query.
-#[derive(Debug, Clone, serde::Serialize)]
+#[derive(Debug, Clone, serde::Serialize, utoipa::ToSchema)]
 pub struct SearchResult {
     /// The document that contains this match.
     pub doc_id: String,
