@@ -1,0 +1,20 @@
+[package]
+name = "mdbase-integration-tests"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "End-to-end integration tests for the Markdotabase workspace"
+
+[dev-dependencies]
+mdbase-core = { workspace = true }
+mdbase-parser = { workspace = true }
+mdbase-storage = { workspace = true }
+mdbase-index = { workspace = true }
+mdbase-graph = { workspace = true }
+mdbase-embedding = { workspace = true }
+mdbase-query = { workspace = true }
+tempfile = "3"
+uuid = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
