@@ -1,0 +1,44 @@
+// Whitespace
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+
+// Case-insensitive keywords
+select_kw = _{ ^"SELECT" }
+from_kw = _{ ^"FROM" }
+where_kw = _{ ^"WHERE" }
+and_kw = _{ ^"AND" }
+or_kw = _{ ^"OR" }
+limit_kw = _{ ^"LIMIT" }
+search_kw = _{ ^"SEARCH" }
+
+// Entity types
+entity = { ^"documents" | ^"blocks" | ^"links" | ^"tags" }
+
+// Values
+string_value = @{ "'" ~ (!"'" ~ ANY)* ~ "'" }
+number_value = @{ ASCII_DIGIT+ }
+uuid_value = @{ ASCII_HEX_DIGIT{8} ~ "-" ~ ASCII_HEX_DIGIT{4} ~ "-" ~ ASCII_HEX_DIGIT{4} ~ "-" ~ ASCII_HEX_DIGIT{4} ~ "-" ~ ASCII_HEX_DIGIT{12} }
+
+value = { uuid_value | string_value | number_value }
+
+// Identifiers for field names
+identifier = @{ ASCII_ALPHA ~ (ASCII_ALPHANUMERIC | "_")* }
+
+// Comparison operators
+op = { ">=" | "<=" | "!=" | "=" | ">" | "<" }
+
+// Conditions
+condition = { identifier ~ op ~ value }
+where_clause = { where_kw ~ condition ~ (and_kw ~ condition)* }
+
+// Limit clause
+limit_clause = { limit_kw ~ number_value }
+
+// SELECT query
+select_query = { select_kw ~ entity ~ where_clause? ~ limit_clause? }
+
+// SEARCH query (fulltext or semantic)
+search_type = { ^"fulltext" | ^"semantic" }
+search_query = { search_kw ~ search_type ~ string_value ~ limit_clause? }
+
+// Top-level
+query = { SOI ~ (select_query | search_query) ~ EOI }
