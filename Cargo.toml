@@ -1,17 +1,17 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/mdbase-core",
-    "crates/mdbase-parser",
-    "crates/mdbase-storage",
-    "crates/mdbase-index",
-    "crates/mdbase-graph",
-    "crates/mdbase-embedding",
-    "crates/mdbase-query",
-    "crates/mdbase-mcp",
-    "crates/mdbase-api",
-    "crates/mdbase-server",
-    "crates/mdbase-integration-tests",
+    "crates/inkbase-core",
+    "crates/inkbase-parser",
+    "crates/inkbase-storage",
+    "crates/inkbase-index",
+    "crates/inkbase-graph",
+    "crates/inkbase-embedding",
+    "crates/inkbase-query",
+    "crates/inkbase-mcp",
+    "crates/inkbase-api",
+    "crates/inkbase-server",
+    "crates/inkbase-integration-tests",
 ]
 
 [workspace.package]
@@ -85,13 +85,13 @@ chrono = { version = "0.4", features = ["serde"] }
 criterion = { version = "0.5", features = ["html_reports"] }
 
 # Internal crates
-mdbase-core = { path = "crates/mdbase-core" }
-mdbase-parser = { path = "crates/mdbase-parser" }
-mdbase-storage = { path = "crates/mdbase-storage" }
-mdbase-index = { path = "crates/mdbase-index" }
-mdbase-graph = { path = "crates/mdbase-graph" }
-mdbase-embedding = { path = "crates/mdbase-embedding" }
-mdbase-query = { path = "crates/mdbase-query" }
-mdbase-mcp = { path = "crates/mdbase-mcp" }
-mdbase-api = { path = "crates/mdbase-api" }
-mdbase-server = { path = "crates/mdbase-server" }
+inkbase-core = { path = "crates/inkbase-core" }
+inkbase-parser = { path = "crates/inkbase-parser" }
+inkbase-storage = { path = "crates/inkbase-storage" }
+inkbase-index = { path = "crates/inkbase-index" }
+inkbase-graph = { path = "crates/inkbase-graph" }
+inkbase-embedding = { path = "crates/inkbase-embedding" }
+inkbase-query = { path = "crates/inkbase-query" }
+inkbase-mcp = { path = "crates/inkbase-mcp" }
+inkbase-api = { path = "crates/inkbase-api" }
+inkbase-server = { path = "crates/inkbase-server" }

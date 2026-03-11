@@ -1,0 +1,20 @@
+[package]
+name = "inkbase-integration-tests"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "End-to-end integration tests for the Inkbase workspace"
+
+[dev-dependencies]
+inkbase-core = { workspace = true }
+inkbase-parser = { workspace = true }
+inkbase-storage = { workspace = true }
+inkbase-index = { workspace = true }
+inkbase-graph = { workspace = true }
+inkbase-embedding = { workspace = true }
+inkbase-query = { workspace = true }
+tempfile = "3"
+uuid = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }

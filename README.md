@@ -1,2 +1,2 @@
-# markdotabase
+# inkbase
 a markdown database

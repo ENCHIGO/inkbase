@@ -6,7 +6,7 @@ PORT="${PORT:-3000}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
 ENGINE="${ENGINE:-sled}"
 
-echo "Markdotabase starting..."
+echo "Inkbase starting..."
 echo "  API:        http://${HOST}:${PORT}"
 echo "  Swagger UI: http://${HOST}:${PORT}/swagger-ui/"
 echo "  Engine:     ${ENGINE}"

@@ -1249,6 +1249,195 @@ dependencies = [
 ]
 
 [[package]]
+name = "inkbase-api"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "axum",
+ "inkbase-core",
+ "inkbase-embedding",
+ "inkbase-graph",
+ "inkbase-index",
+ "inkbase-parser",
+ "inkbase-storage",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower-http",
+ "tracing",
+ "utoipa",
+ "utoipa-swagger-ui",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "blake3",
+ "chrono",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "thiserror 2.0.18",
+ "utoipa",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-embedding"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "inkbase-core",
+ "inkbase-index",
+ "parking_lot 0.12.5",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-graph"
+version = "0.1.0"
+dependencies = [
+ "inkbase-core",
+ "petgraph",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "tracing",
+ "utoipa",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-index"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "inkbase-core",
+ "ordered-float",
+ "parking_lot 0.12.5",
+ "serde",
+ "serde_json",
+ "tantivy",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tracing",
+ "utoipa",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-integration-tests"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "inkbase-core",
+ "inkbase-embedding",
+ "inkbase-graph",
+ "inkbase-index",
+ "inkbase-parser",
+ "inkbase-query",
+ "inkbase-storage",
+ "serde_json",
+ "tempfile",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-mcp"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "axum",
+ "inkbase-core",
+ "inkbase-embedding",
+ "inkbase-graph",
+ "inkbase-index",
+ "inkbase-parser",
+ "inkbase-storage",
+ "rmcp",
+ "schemars 0.8.22",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "inkbase-parser"
+version = "0.1.0"
+dependencies = [
+ "blake3",
+ "chrono",
+ "comrak",
+ "criterion",
+ "inkbase-core",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-query"
+version = "0.1.0"
+dependencies = [
+ "inkbase-core",
+ "pest",
+ "pest_derive",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "uuid",
+]
+
+[[package]]
+name = "inkbase-server"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "inkbase-api",
+ "inkbase-core",
+ "inkbase-embedding",
+ "inkbase-graph",
+ "inkbase-index",
+ "inkbase-mcp",
+ "inkbase-parser",
+ "inkbase-storage",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "inkbase-storage"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "criterion",
+ "inkbase-core",
+ "parking_lot 0.12.5",
+ "serde",
+ "serde_json",
+ "sled",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
 name = "instant"
 version = "0.1.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1429,195 +1618,6 @@ name = "matchit"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
-
-[[package]]
-name = "mdbase-api"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "axum",
- "mdbase-core",
- "mdbase-embedding",
- "mdbase-graph",
- "mdbase-index",
- "mdbase-parser",
- "mdbase-storage",
- "serde",
- "serde_json",
- "tokio",
- "tower-http",
- "tracing",
- "utoipa",
- "utoipa-swagger-ui",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-core"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "blake3",
- "chrono",
- "serde",
- "serde_json",
- "serde_yaml",
- "thiserror 2.0.18",
- "utoipa",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-embedding"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "mdbase-core",
- "mdbase-index",
- "parking_lot 0.12.5",
- "reqwest",
- "serde",
- "serde_json",
- "thiserror 2.0.18",
- "tokio",
- "tracing",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-graph"
-version = "0.1.0"
-dependencies = [
- "mdbase-core",
- "petgraph",
- "serde",
- "serde_json",
- "thiserror 2.0.18",
- "tracing",
- "utoipa",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-index"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "mdbase-core",
- "ordered-float",
- "parking_lot 0.12.5",
- "serde",
- "serde_json",
- "tantivy",
- "tempfile",
- "thiserror 2.0.18",
- "tracing",
- "utoipa",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-integration-tests"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "mdbase-core",
- "mdbase-embedding",
- "mdbase-graph",
- "mdbase-index",
- "mdbase-parser",
- "mdbase-query",
- "mdbase-storage",
- "serde_json",
- "tempfile",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-mcp"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "axum",
- "mdbase-core",
- "mdbase-embedding",
- "mdbase-graph",
- "mdbase-index",
- "mdbase-parser",
- "mdbase-storage",
- "rmcp",
- "schemars 0.8.22",
- "serde",
- "serde_json",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "mdbase-parser"
-version = "0.1.0"
-dependencies = [
- "blake3",
- "chrono",
- "comrak",
- "criterion",
- "mdbase-core",
- "serde",
- "serde_json",
- "serde_yaml",
- "tracing",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-query"
-version = "0.1.0"
-dependencies = [
- "mdbase-core",
- "pest",
- "pest_derive",
- "serde",
- "serde_json",
- "thiserror 2.0.18",
- "uuid",
-]
-
-[[package]]
-name = "mdbase-server"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "mdbase-api",
- "mdbase-core",
- "mdbase-embedding",
- "mdbase-graph",
- "mdbase-index",
- "mdbase-mcp",
- "mdbase-parser",
- "mdbase-storage",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "mdbase-storage"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "criterion",
- "mdbase-core",
- "parking_lot 0.12.5",
- "serde",
- "serde_json",
- "sled",
- "tempfile",
- "thiserror 2.0.18",
- "tracing",
- "uuid",
-]
 
 [[package]]
 name = "measure_time"
@@ -2958,9 +2958,9 @@ dependencies = [
 
 [[package]]
 name = "tempfile"
-version = "3.26.0"
+version = "3.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "82a72c767771b47409d2345987fda8628641887d5466101319899796367354a0"
+checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
  "fastrand",
  "getrandom 0.4.2",

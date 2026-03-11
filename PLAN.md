@@ -1,4 +1,4 @@
-# Markdotabase: 面向 Markdown 的高性能数据库中间件
+# Inkbase: 面向 Markdown 的高性能数据库中间件
 
 ## Context
 
@@ -42,19 +42,19 @@
 ## Rust Workspace 结构
 
 ```
-markdotabase/
+inkbase/
   Cargo.toml                    # workspace root
   crates/
-    mdbase-core/                # 核心类型、trait、错误类型
-    mdbase-parser/              # Markdown 解析 (comrak)、frontmatter、链接提取
-    mdbase-storage/             # 存储引擎 (Phase 1 用 sled, Phase 4 自研)
-    mdbase-index/               # 搜索索引 (tantivy 全文 + HNSW 向量)
-    mdbase-graph/               # 知识图谱 (petgraph)
-    mdbase-embedding/           # 向量嵌入管道 (ort/OpenAI/Ollama)
-    mdbase-query/               # 查询引擎、MQL DSL
-    mdbase-mcp/                 # MCP 服务端 (rmcp)
-    mdbase-api/                 # REST API (axum)
-    mdbase-server/              # 二进制入口 (clap CLI)
+    inkbase-core/                # 核心类型、trait、错误类型
+    inkbase-parser/              # Markdown 解析 (comrak)、frontmatter、链接提取
+    inkbase-storage/             # 存储引擎 (Phase 1 用 sled, Phase 4 自研)
+    inkbase-index/               # 搜索索引 (tantivy 全文 + HNSW 向量)
+    inkbase-graph/               # 知识图谱 (petgraph)
+    inkbase-embedding/           # 向量嵌入管道 (ort/OpenAI/Ollama)
+    inkbase-query/               # 查询引擎、MQL DSL
+    inkbase-mcp/                 # MCP 服务端 (rmcp)
+    inkbase-api/                 # REST API (axum)
+    inkbase-server/              # 二进制入口 (clap CLI)
   tests/                        # 集成测试
   benches/                      # 性能基准测试
 ```
@@ -108,7 +108,7 @@ markdotabase/
 | `graph_query` | 图算法（最短路径/邻域/中心性） |
 | `delete_document` | 删除文档 |
 
-MCP Resources: `mdbase://documents/{path}`, `mdbase://stats`, `mdbase://graph/overview`
+MCP Resources: `inkbase://documents/{path}`, `inkbase://stats`, `inkbase://graph/overview`
 
 ---
 
@@ -155,23 +155,23 @@ GET                  /api/v1/health
 **目标**：Markdown 文档的摄取、存储、结构化查询，通过 MCP 可用。
 
 1. 创建 Cargo workspace + 所有 crate 骨架
-2. `mdbase-core` — 类型定义、错误类型、配置
-3. `mdbase-parser` — comrak 集成、AST→BlockRecord、frontmatter 解析、链接提取
-4. `mdbase-storage` — **用 sled 作为临时存储**（trait 抽象，后续可替换）
-5. `mdbase-mcp` — rmcp stdio MCP 服务，实现 `ingest_document`, `get_document`, `query_blocks`, `list_documents`, `delete_document`
-6. `mdbase-server` — 二进制入口，启动 MCP 服务
+2. `inkbase-core` — 类型定义、错误类型、配置
+3. `inkbase-parser` — comrak 集成、AST→BlockRecord、frontmatter 解析、链接提取
+4. `inkbase-storage` — **用 sled 作为临时存储**（trait 抽象，后续可替换）
+5. `inkbase-mcp` — rmcp stdio MCP 服务，实现 `ingest_document`, `get_document`, `query_blocks`, `list_documents`, `delete_document`
+6. `inkbase-server` — 二进制入口，启动 MCP 服务
 
 ### Phase 2: 搜索 + REST + 图
 
-- `mdbase-index` — Tantivy 全文搜索集成
-- `mdbase-graph` — petgraph 内存图，链接/反向链接遍历
-- `mdbase-api` — axum REST API
+- `inkbase-index` — Tantivy 全文搜索集成
+- `inkbase-graph` — petgraph 内存图，链接/反向链接遍历
+- `inkbase-api` — axum REST API
 - MCP 新增 `search_fulltext`, `get_links`, `get_backlinks`
 
 ### Phase 3: 语义搜索
 
-- `mdbase-embedding` — ort 本地嵌入 + 异步管道
-- `mdbase-index` 向量部分 — HNSW 索引
+- `inkbase-embedding` — ort 本地嵌入 + 异步管道
+- `inkbase-index` 向量部分 — HNSW 索引
 - MCP/REST 新增 `search_semantic`
 
 ### Phase 4: 自研存储引擎

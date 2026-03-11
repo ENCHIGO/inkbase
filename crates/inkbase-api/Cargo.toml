@@ -1,0 +1,24 @@
+[package]
+name = "inkbase-api"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "REST API for Inkbase using axum"
+
+[dependencies]
+inkbase-core.workspace = true
+inkbase-parser.workspace = true
+inkbase-storage.workspace = true
+inkbase-index.workspace = true
+inkbase-graph.workspace = true
+inkbase-embedding.workspace = true
+axum.workspace = true
+tower-http.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+anyhow.workspace = true
+utoipa = { workspace = true }
+utoipa-swagger-ui = { workspace = true }
